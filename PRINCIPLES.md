@@ -26,7 +26,7 @@ That’s the whole philosophy. **Use what's already racked.** Arguing with reali
 
 **Boring technology.** Every project gets a few innovation tokens. Spend them only where the project is actually novel. Use the boring choice everywhere else.
 
-**Rule of Three.** DRY, but not before the third repetition. A premature abstraction costs more than duplication.
+**Rule of Three.** DRY, but not before the third repetition. A premature abstraction costs more than duplication. A critical invariant is the exception: implement it once.
 
 **Gall's Law.** Working complex systems grow out of working simple ones. Don't design the big one up front.
 

@@ -2,7 +2,7 @@
 
 Each principle from [PRINCIPLES.md](PRINCIPLES.md) turned into rules you can check in review. When they pull against each other, pick what works and is easiest to undo.
 
-Each repo copies this into its own `docs/standards.md` and swaps in its own examples. Repo-specific rules go there too.
+Each repo copies this into its own `docs/standards.md` and swaps in its own examples. Repo-specific rules go there too. When this file changes, resync the copies.
 
 ## Jungle Style
 
@@ -63,13 +63,14 @@ Work with the grain. Don't force it.
 
 Few, focused tests of consequential behavior, at boundaries that stay put.
 
-- Test what a user would notice: the behaviors the spec promises, and recovery after a crash.
-- Don't test plumbing, getters, wording, or internal call order. Don't mock half the system to prove a call happened.
+- Test what a user would notice: the behaviors the spec promises, recovery after a crash, and the security boundaries.
+- Don't test plumbing, getters, or internal call order. Don't mock half the system to prove a call happened.
+- Don't pin prose: check what a message means, not its words. Output another program reads is interface, and a test may pin it.
 - Before adding a test, ask what realistic regression it catches and whether it survives a refactor. If the answer is weak, skip it.
 
 ## Running it
 
-- One command runs local checks and CI. One maintained script installs it. Setup steps don't get scattered across docs.
+- One command runs local checks and CI. Installing takes as few maintained scripts as the job needs. Setup steps don't get scattered across docs.
 - The README says what the project is and how to run it, in that order.
 
 ## Privacy
