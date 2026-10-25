@@ -1,8 +1,8 @@
 # Standards
 
-Each principle from [PRINCIPLES.md](PRINCIPLES.md) turned into rules you can check in review. When they pull against each other, pick what works and is easiest to undo.
+Each principle from [PRINCIPLES.md](https://github.com/junglestyle/.github/blob/main/PRINCIPLES.md) turned into rules you can check in review. When they pull against each other, pick what works and is easiest to undo.
 
-Each repo copies this into its own `docs/standards.md` and swaps in its own examples. Repo-specific rules go there too. When this file changes, resync the copies.
+Each repo keeps this file unchanged as `docs/org-standards.md`, headed by the commit it came from, and puts its own rules and examples in `docs/standards.md`. Where the two differ, the repo's file wins and names the rule it overrides. The repo's checks fail if the copy was edited by hand, and warn when this file has moved on; resyncing is one command.
 
 ## Jungle Style
 
