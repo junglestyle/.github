@@ -74,11 +74,24 @@ Few tests, at boundaries that stay put.
 
 ## Privacy
 
-- Never commit hostnames, tokens, personal context, or deployment config. Use `.env.example` for config shape.
+- Never commit hostnames, tokens, personal context, or deployment config. Use `.env.example` for config shape. In docs, name roles, not machines: "the NAS" or "a GPU host".
 
 ## Comments and names
 
 - Names say what. Comments say why, and only when the why isn't obvious: a constraint, an invariant, a tradeoff.
 - No comments that restate the code, and no commented-out code.
 - Project names are dumb and Linuxy: short, lowercase, nothing producty.
+
+## Prose
+
+For docs, commit messages, and PR descriptions. Follow the rules in
+[agent-style](https://github.com/yzhao062/agent-style/blob/7da99e0b0610aca4e4d340351bd802bfd448c894/RULES.md)
+but skip its House Style section, which is for academic papers. These rules take precedence:
+
+- Describe the project as it is meant to be. No dates, approval trails, or "replacing X"; history lives in git.
+- Link instead of restating. Each fact has one home, the same as in code.
+- Arrange sections in the order a reader needs them.
+- Error messages, log lines, and CLI output are interface. Changing their wording is an interface change, not a style edit.
+- Contractions are fine, and headings use sentence case.
+- "X, not Y" is fine where it prevents a real confusion.
 - When writing up a problem, separate evidence, inference, and unknowns, and label which is which.
