@@ -3,7 +3,7 @@
 
 AI systems built and run on my own hardware by [Nathan Curry](https://nathancurry.com), a software maintenance engineer in Red Hat's OpenShift Enhanced Solution Support team.
 
-Everything here is built [Jungle Style](https://github.com/junglestyle/.github/blob/main/PRINCIPLES.md): use what's already racked. The [standards](https://github.com/junglestyle/.github/blob/main/STANDARDS.md) turn that into rules you can check in review.
+Everything here is built [Jungle Style](https://github.com/junglestyle/.github/blob/main/PRINCIPLES.md): use what's already racked. The [standards](https://github.com/junglestyle/.github/blob/main/code-standards/README.md) turn that into rules you can check in review.
 
 The main project is a pipeline that turns recorded conversations into a map of the ideas in them:
 

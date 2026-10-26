@@ -1,6 +1,6 @@
 # Go standards
 
-Decisions for Go code, beneath the org [standards](https://github.com/junglestyle/.github/blob/main/STANDARDS.md). `.golangci.yml` holds the mechanical rules; this file holds what a linter can't check. No junglestyle repo uses Go yet, so every rule here comes from the sources below and the org standards, not from practice.
+Decisions for Go code, beneath the org [standards](https://github.com/junglestyle/.github/blob/main/code-standards/README.md). `.golangci.yml` holds the mechanical rules; this file holds what a linter can't check. No junglestyle repo uses Go yet, so every rule here comes from the sources below and the org standards, not from practice.
 
 ## Errors
 

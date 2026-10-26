@@ -1,4 +1,4 @@
-# Called by each repo's CI: fails if docs/org-standards.md isn't an unchanged copy of this repo's STANDARDS.md on main.
+# Called by each repo's CI: fails if docs/org-standards.md isn't an unchanged copy of this repo's code-standards/README.md on main.
 name: standards-check
 on:
   workflow_call:
@@ -14,5 +14,5 @@ jobs:
           path: .org
       - shell: bash
         run: |
-          diff -u .org/STANDARDS.md <(tail -n +2 docs/org-standards.md) \
-            || { echo "docs/org-standards.md differs from the org's STANDARDS.md: run make sync-standards"; exit 1; }
+          diff -u .org/code-standards/README.md <(tail -n +2 docs/org-standards.md) \
+            || { echo "docs/org-standards.md differs from the org's code-standards/README.md: run make sync-standards"; exit 1; }
