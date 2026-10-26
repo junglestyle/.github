@@ -6,7 +6,7 @@
 #
 # <dir> holds a checkout of junglestyle/.github. README.md always applies and is copied to
 # docs/org-standards.md. Each topic listed in .org-standards (whitespace-separated, # starts a comment)
-# is copied from <topic>.md to docs/org-standards-<topic>.md.
+# is copied from <topic>.md to docs/org-standards-<topic>.md. Every repo has .org-standards, even if it lists none.
 set -euo pipefail
 
 usage() {
@@ -14,9 +14,9 @@ usage() {
     exit 2
 }
 
-# Prints the declared topics, one per line. A missing .org-standards declares none.
+# Prints the declared topics, one per line. A missing .org-standards is an error.
 topics() {
-    [[ -f .org-standards ]] || return 0
+    [[ -f .org-standards ]] || { echo "no .org-standards in $PWD: create it and list the repo's topics, or none" >&2; return 1; }
     sed 's/#.*//' .org-standards | tr -s '[:space:]' '\n' | while read -r topic; do
         [[ -n $topic ]] || continue
         if [[ ! $topic =~ ^[a-z0-9-]+$ ]]; then
