@@ -31,7 +31,7 @@ Decisions for Python code, beneath the org [standards](https://github.com/jungle
 - Internal records are `@dataclass(frozen=True)`. Make a changed copy with `dataclasses.replace`.
 - Pydantic only where outside data needs validating: request bodies and model output. Past that edge, pass dataclasses or plain values.
 - A closed set of names (states, kinds) is a `StrEnum` whose values are the strings stored in the database.
-- SQL is plain and parameterized, through the stdlib's `sqlite3` or psycopg 3. Raw SQL by default; an ORM needs an ADR in `docs/stack.md`.
+- SQL is plain and parameterized, through the stdlib's `sqlite3` or psycopg 3. Raw SQL by default. An ORM or query builder needs an ADR in `docs/stack.md`; the ADR covers its migration tool too (e.g. alembic), and the numbered `NNN_name.sql` rule doesn't apply to that repo.
 - Schema changes are numbered `NNN_name.sql` files, each applied once in its own transaction and never edited after it ships.
 
 ## Errors
