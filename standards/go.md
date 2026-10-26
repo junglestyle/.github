@@ -1,6 +1,6 @@
 # Go standards
 
-Decisions for Go code, beneath the org [standards](https://github.com/junglestyle/.github/blob/main/STANDARDS.md). `.golangci.yml` holds the mechanical rules; this file holds what a linter can't check. "(?)" marks a decision still to be confirmed. No junglestyle repo uses Go yet, so every rule here comes from the sources below and the org standards, not from practice.
+Decisions for Go code, beneath the org [standards](https://github.com/junglestyle/.github/blob/main/STANDARDS.md). `.golangci.yml` holds the mechanical rules; this file holds what a linter can't check. No junglestyle repo uses Go yet, so every rule here comes from the sources below and the org standards, not from practice.
 
 ## Errors
 
@@ -17,13 +17,13 @@ Decisions for Go code, beneath the org [standards](https://github.com/junglestyl
 
 ## Layout
 
-- One module per repo. `go.mod`'s `go` line names the current release. (?)
-- One binary: `package main` at the root. Several: `cmd/<name>/main.go` each. (?)
-- Packages that aren't a public API live under `internal/`. No `pkg/` directory. (?)
+- One module per repo. `go.mod`'s `go` line names the current release.
+- One binary: `package main` at the root. Several: `cmd/<name>/main.go` each.
+- Packages that aren't a public API live under `internal/`. No `pkg/` directory.
 - Name a package for what it provides (`queue`, `lease`), never `util`, `common`, `types`, `models` or `helpers`.
 - An interface belongs to the package that consumes it. Return concrete types. Don't declare an interface until a second implementation or a test fake needs one.
 - No `init()` with side effects and no mutable package-level state. Build dependencies in `run` and pass them down.
-- Configure with flags and env vars read in `main`, through the stdlib `flag` package. Constructors take a config struct, not functional options. (?)
+- Configure with flags and env vars read in `main`, through the stdlib `flag` package. Constructors take a config struct, not functional options.
 
 ## Concurrency
 
@@ -32,7 +32,7 @@ Decisions for Go code, beneath the org [standards](https://github.com/junglestyl
 - `ctx context.Context` is the first parameter of anything that does I/O or can block. Never store it in a struct. `context.Background()` appears only in `main` and tests.
 - Channels are unbuffered or of size one. Any other size has a comment saying what bounds it.
 - A mutex sits beside the fields it guards, as a named field, not embedded. Its zero value is ready to use.
-- No goroutines started from `init` or a constructor. The caller starts them and owns their lifetime. (?)
+- No goroutines started from `init` or a constructor. The caller starts them and owns their lifetime.
 - `go test -race` runs in `make check`.
 
 ## Testing
@@ -42,16 +42,16 @@ Decisions for Go code, beneath the org [standards](https://github.com/junglestyl
 - Failures name the call, the input, what it got, then what it wanted: `t.Errorf("Parse(%q) = %v, want %v", in, got, want)`.
 - `t.Errorf` to keep checking; `t.Fatalf` only when the test can't go on. Helpers call `t.Helper()`.
 - Use a table when cases share one shape. Name subtests so `go test -run` can select them.
-- Compare structs with `go-cmp`'s `cmp.Diff` and print the diff. (?)
+- Compare structs with `go-cmp`'s `cmp.Diff` and print the diff.
 - Test errors by meaning (`errors.Is`, or just `err != nil`), never by message text.
-- Tests run in parallel only if they were written to. (?)
+- Tests run in parallel only if they were written to.
 
 ## Dependencies
 
 - The stdlib first: `net/http`, `log/slog`, `flag`, `database/sql`, `encoding/json`. `golang.org/x/...` counts as nearly stdlib.
-- For Postgres use pgx; for SQLite, `modernc.org/sqlite`, which needs no cgo. (?)
+- For Postgres use pgx; for SQLite, `modernc.org/sqlite`, which needs no cgo.
 - No web frameworks, DI containers, ORMs, viper or cobra.
-- Commit `go.sum`. `make check` fails if `go mod tidy` would change anything. Don't vendor. (?)
+- Commit `go.sum`. `make check` fails if `go mod tidy` would change anything. Don't vendor.
 
 ## Proverbs
 

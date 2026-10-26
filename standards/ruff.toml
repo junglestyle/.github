@@ -1,7 +1,8 @@
-# Org lint and format rules for Python. Copy to the repo root; it overrides [tool.ruff] in pyproject.toml.
+# Reference lint and format rules for Python. Bootstrap copies them into pyproject.toml once, at setup, with
+# each table under tool.ruff ([lint] becomes [tool.ruff.lint]). After that the repo's pyproject owns its config.
 # target-version comes from requires-python.
 
-line-length = 110  # corral uses 110, hypertrace 100 (?)
+line-length = 110
 
 [lint]
 select = ["ALL"]
@@ -29,9 +30,9 @@ ignore = [
     "A005",
     # Untyped data enters as Any at the boundary (decoded JSON, driver rows).
     "ANN401",
-    # A literal bool argument at the call site; FBT001/FBT002 still apply to definitions. (?)
+    # A literal bool argument at the call site; FBT001/FBT002 still apply to definitions.
     "FBT003",
-    # Commands are argv lists with shell=False; flagging every call adds noise, not safety. (?)
+    # Commands are argv lists with shell=False; flagging every call adds noise, not safety.
     "S603", "S607",
     # No license headers or TODO formatting rules.
     "CPY", "FIX", "TD",
