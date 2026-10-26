@@ -1,6 +1,6 @@
 # Python standards
 
-Decisions for Python code, beneath the org [standards](https://github.com/junglestyle/.github/blob/main/STANDARDS.md). `ruff.toml` holds the mechanical rules; this file holds what a linter can't check. "(?)" marks a decision still to be confirmed.
+Decisions for Python code, beneath the org [standards](https://github.com/junglestyle/.github/blob/main/STANDARDS.md). `ruff.toml` holds the mechanical rules; this file holds what a linter can't check.
 
 ## Tooling
 
@@ -8,7 +8,7 @@ Decisions for Python code, beneath the org [standards](https://github.com/jungle
 - Pin one Python in `.python-version`: the newest release every dependency supports. `requires-python` matches it.
 - Dev tools go in `[dependency-groups] dev`. Extras are only for optional runtime features, like `models`.
 - Build with hatchling.
-- Ruff lints and formats with the org `ruff.toml`. mypy runs with `strict = true` over the package. Tests aren't annotated or type-checked. (?)
+- Ruff lints and formats with the org `ruff.toml`. mypy runs with `strict = true` over the package. Tests aren't annotated or type-checked.
 - `make check` runs `ruff check`, `ruff format --check`, `mypy` and `pytest`, and CI runs `make check`.
 
 ## Layout
@@ -17,19 +17,19 @@ Decisions for Python code, beneath the org [standards](https://github.com/jungle
 - Each command is a `[project.scripts]` entry that calls a `main()`. CLIs use argparse, not click or typer.
 - `__init__.py` stays empty: no re-exports, no `__all__`, no import-time work.
 - Files the code reads at runtime (SQL, HTML, prompts) live inside the package and load through `importlib.resources`.
-- Name a module for the one concept it holds (`queue.py`, `egress.py`). No `utils.py`, `helpers.py` or `common.py`. (?)
+- Name a module for the one concept it holds (`queue.py`, `egress.py`). No `utils.py`, `helpers.py` or `common.py`.
 
 ## Typing
 
 - Annotate every function in the package, private ones included.
 - A seam is a `typing.Protocol` defined beside the code that consumes it. Implementations don't inherit from it, and there are no ABCs.
-- `Any` appears only where untyped data enters (decoded JSON, a driver row). Parse it into a typed record before it travels further. (?)
+- `Any` appears only where untyped data enters (decoded JSON, a driver row). Parse it into a typed record before it travels further.
 - No `cast()`. A `# type: ignore[code]` gets a comment saying why it's safe.
 
 ## Data modeling
 
 - Internal records are `@dataclass(frozen=True)`. Make a changed copy with `dataclasses.replace`.
-- Pydantic only where outside data needs validating: request bodies and model output. Past that edge, pass dataclasses or plain values. (?)
+- Pydantic only where outside data needs validating: request bodies and model output. Past that edge, pass dataclasses or plain values.
 - A closed set of names (states, kinds) is a `StrEnum` whose values are the strings stored in the database.
 - SQL is plain and parameterized, through the stdlib's `sqlite3` or psycopg 3. No ORM and no query builder.
 - Schema changes are numbered `NNN_name.sql` files, each applied once in its own transaction and never edited after it ships.
@@ -40,16 +40,16 @@ Decisions for Python code, beneath the org [standards](https://github.com/jungle
 - Messages are lowercase, quote the bad value with `!r`, and say what fixes it when something does: `f"{name} is not set (see .env.example)"`.
 - For a failure the operator fixes (a missing setting, an unknown name, a bad argument), raise `SystemExit("message")`: a clear line, exit status 1, no traceback.
 - `except Exception` belongs only at a run or loop boundary, where it records the failure and then re-raises or moves on to the next item. Everywhere else, catch the exception you actually handle.
-- Docstrings are prose: what the function does and anything the signature can't say. No `Args:`/`Returns:` sections that repeat the signature. (conflict: Google's guide requires those sections; your code never uses them)
+- Docstrings are prose: what the function does and anything the signature can't say. No `Args:`/`Returns:` sections that repeat the signature.
 
 ## Output and logging
 
 - A CLI prints its result to stdout, as JSON when another program reads it. Progress and diagnostics go to stderr.
-- A service writes plain lines to stdout or stderr and leaves timestamps and retention to journald or Docker. No logging config files or handlers of its own. (?)
+- A service writes plain lines to stdout or stderr and leaves timestamps and retention to journald or Docker. No logging config files or handlers of its own.
 
 ## Concurrency
 
-- Synchronous by default. Use async only inside an async framework (FastAPI) or to fan out many I/O calls at once. (?)
+- Synchronous by default. Use async only inside an async framework (FastAPI) or to fan out many I/O calls at once.
 - A background thread gets a stop `Event` and is joined on shutdown. Sleep with `stop.wait(n)`, not `time.sleep(n)`.
 
 ## Testing
@@ -64,7 +64,7 @@ Decisions for Python code, beneath the org [standards](https://github.com/jungle
 
 ## Dependencies
 
-- Declare lower bounds only (`httpx>=0.27`); `uv.lock` holds the exact versions. Pin exactly or cap a version only for a known break, with a comment naming it. (?)
+- Declare lower bounds only (`httpx>=0.27`); `uv.lock` holds the exact versions. Pin exactly or cap a version only for a known break, with a comment naming it.
 - torch comes from the PyTorch CPU index through `[tool.uv.sources]`, unless the code runs on a GPU.
 
 ---
