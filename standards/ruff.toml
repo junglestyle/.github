@@ -1,4 +1,5 @@
-# Org lint and format rules for Python. Copy to the repo root; it overrides [tool.ruff] in pyproject.toml.
+# Reference lint and format rules for Python. Bootstrap copies them into pyproject.toml once, at setup, with
+# each table under tool.ruff ([lint] becomes [tool.ruff.lint]). After that the repo's pyproject owns its config.
 # target-version comes from requires-python.
 
 line-length = 110

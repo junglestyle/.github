@@ -8,7 +8,7 @@ Decisions for Python code, beneath the org [standards](https://github.com/jungle
 - Pin one Python in `.python-version`: the newest release every dependency supports. `requires-python` matches it.
 - Dev tools go in `[dependency-groups] dev`. Extras are only for optional runtime features, like `models`.
 - Build with hatchling.
-- Ruff lints and formats with the org `ruff.toml`. mypy runs with `strict = true` over the package. Tests aren't annotated or type-checked.
+- Ruff lints and formats with each repo's `[tool.ruff]` in `pyproject.toml`. The org's [`ruff.toml`](ruff.toml) is the reference that bootstrap copies in once. mypy runs with `strict = true` over the package. Tests aren't annotated or type-checked.
 - `make check` runs `ruff check`, `ruff format --check`, `mypy` and `pytest`, and CI runs `make check`.
 
 ## Layout
@@ -31,7 +31,7 @@ Decisions for Python code, beneath the org [standards](https://github.com/jungle
 - Internal records are `@dataclass(frozen=True)`. Make a changed copy with `dataclasses.replace`.
 - Pydantic only where outside data needs validating: request bodies and model output. Past that edge, pass dataclasses or plain values.
 - A closed set of names (states, kinds) is a `StrEnum` whose values are the strings stored in the database.
-- SQL is plain and parameterized, through the stdlib's `sqlite3` or psycopg 3. No ORM and no query builder.
+- SQL is plain and parameterized, through the stdlib's `sqlite3` or psycopg 3. Raw SQL by default; an ORM needs an ADR in `docs/stack.md`.
 - Schema changes are numbered `NNN_name.sql` files, each applied once in its own transaction and never edited after it ships.
 
 ## Errors
