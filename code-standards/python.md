@@ -1,6 +1,6 @@
 # Python standards
 
-Decisions for Python code, beneath the org [standards](https://github.com/junglestyle/.github/blob/main/STANDARDS.md). `ruff.toml` holds the mechanical rules; this file holds what a linter can't check.
+Decisions for Python code, beneath the org [standards](https://github.com/junglestyle/.github/blob/main/code-standards/README.md). `ruff.toml` holds the mechanical rules; this file holds what a linter can't check.
 
 ## Tooling
 

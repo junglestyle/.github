@@ -58,4 +58,4 @@ That’s the whole philosophy. **Use what's already racked.** Arguing with reali
 
 ## For agents
 
-[STANDARDS.md](STANDARDS.md) is the enforceable version: these principles as rules you can check in review. Each repo's `AGENTS.md` links to its own copy; [corral's](https://github.com/junglestyle/corral/blob/main/docs/standards.md) is the reference example.
+[code-standards/README.md](code-standards/README.md) is the enforceable version: these principles as rules you can check in review. Each repo's `AGENTS.md` links to its own copy; [corral's](https://github.com/junglestyle/corral/blob/main/docs/standards.md) is the reference example.
