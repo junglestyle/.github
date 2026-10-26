@@ -1,7 +1,13 @@
-# Called by each repo's CI: fails if docs/org-standards.md isn't an unchanged copy of this repo's code-standards/README.md on main.
+# Called by each repo's CI: fails if the repo's copies of code-standards/ (docs/org-standards.md, and
+# docs/org-standards-<topic>.md for each topic in .org-standards) aren't unchanged copies of this repo's files.
 name: standards-check
 on:
   workflow_call:
+    inputs:
+      standards_ref:
+        description: The ref of junglestyle/.github to check against. Callers on main leave it unset.
+        type: string
+        default: main
 jobs:
   check:
     runs-on: ubuntu-latest
@@ -10,9 +16,6 @@ jobs:
       - uses: actions/checkout@v4
         with:
           repository: junglestyle/.github
-          ref: main
+          ref: ${{ inputs.standards_ref }}
           path: .org
-      - shell: bash
-        run: |
-          diff -u .org/code-standards/README.md <(tail -n +2 docs/org-standards.md) \
-            || { echo "docs/org-standards.md differs from the org's code-standards/README.md: run make sync-standards"; exit 1; }
+      - run: .org/code-standards/sync.sh check .org
