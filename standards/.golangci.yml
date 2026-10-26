@@ -1,0 +1,91 @@
+# Org lint and format rules for Go. Copy to the repo root. golangci-lint v2.
+version: "2"
+
+linters:
+  default: standard # errcheck, govet, ineffassign, staticcheck, unused
+  enable:
+    - bodyclose
+    - containedctx # ctx is a parameter, never a struct field
+    - contextcheck
+    - depguard
+    - errname # ErrX variables, XError types
+    - errorlint # %w, errors.Is and errors.As
+    - gocritic
+    - gochecknoinits
+    - misspell
+    - nilerr
+    - nilnil
+    - noctx
+    - nolintlint
+    - predeclared
+    - revive
+    - rowserrcheck
+    - sqlclosecheck
+    - thelper
+    - unconvert
+    - unparam
+    - usestdlibvars
+    - wastedassign
+  settings:
+    errcheck:
+      check-type-assertions: true
+    govet:
+      enable-all: true
+      disable:
+        - fieldalignment
+        - shadow
+    nolintlint:
+      require-explanation: true
+      require-specific: true
+    depguard:
+      rules:
+        main:
+          deny:
+            - pkg: github.com/stretchr/testify
+              desc: use the testing package
+            - pkg: github.com/onsi/gomega
+              desc: use the testing package
+            - pkg: github.com/golang/mock
+              desc: write a small fake
+            - pkg: go.uber.org/mock
+              desc: write a small fake
+            - pkg: github.com/pkg/errors
+              desc: use errors and fmt.Errorf with %w
+            - pkg: github.com/sirupsen/logrus
+              desc: use log/slog
+            - pkg: go.uber.org/zap
+              desc: use log/slog
+            - pkg: github.com/spf13/viper
+              desc: read flags and env vars in main
+            - pkg: github.com/spf13/cobra
+              desc: use the flag package
+            - pkg: math/rand$
+              desc: use math/rand/v2, or crypto/rand for anything secret
+    revive:
+      rules:
+        - name: context-as-argument
+        - name: error-return
+        - name: error-strings
+        - name: error-naming
+        - name: exported
+        - name: package-comments
+        - name: receiver-naming
+        - name: var-naming
+        - name: indent-error-flow
+        - name: superfluous-else
+        - name: unexported-return
+        - name: deep-exit # os.Exit and log.Fatal only in main
+        - name: import-shadowing
+        - name: unused-receiver
+  exclusions:
+    presets:
+      - std-error-handling
+    rules:
+      - path: _test\.go
+        linters:
+          - unparam
+
+formatters:
+  enable:
+    - gofmt
+    - goimports
