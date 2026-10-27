@@ -66,7 +66,8 @@ Few, focused tests of consequential behavior, at boundaries that stay put.
 
 - The README says what the project is and how to run it, in that order.
 - Docs describe the behavior a user can observe (a default, a state name, an env var), so a reader never has to open the code to learn what the project does. They don't carry a second copy of the logic.
-- A deferred requirement gets a line in the spec or `docs/ROADMAP.md`, not a stub in code.
+- `docs/SPEC.md` says what the product is meant to do. `docs/ROADMAP.md` says the order it gets built in: slices, each usable on its own, each naming what a user would notice and a done-when someone can demonstrate. A slice names the spec requirements it delivers instead of restating them.
+- A deferred requirement stays in the spec and gets a later slice in the roadmap, not a stub in code.
 - A decision that's hard to undo gets an ADR in `docs/stack.md`.
 
 ## Prose
