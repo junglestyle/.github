@@ -61,6 +61,7 @@ Few, focused tests of consequential behavior, at boundaries that stay put.
 
 - Never commit hostnames, tokens, personal context, or deployment config. In docs, name roles, not machines: "the NAS" or "a GPU host".
 - Commit the shape of config, never its values. `.env.example` holds it unless the repo's standards name another place.
+- The values go in the project's deployment repo (see [Deployment repos](#deployment-repos)).
 
 ## Docs
 
@@ -72,7 +73,7 @@ Few, focused tests of consequential behavior, at boundaries that stay put.
 
 ## Deployment repos
 
-A deployment repo, `<name>-deployment`, is the private half of a public repo. It holds the values the public repo can't (addresses, scope, secrets, release pins) and the automation that applies them. The public repo's architecture names what it owns. These rules replace the general ones they name, and everything else applies as written.
+Deployment facts go in a parallel private repo, `<name>-deployment`, kept in the deployer's personal GitHub account, not the org. It holds the values the public repo can't (addresses, scope, secrets, release pins) and the automation that applies them. The public repo's architecture names what it owns. These rules replace the general ones they name, and everything else applies as written.
 
 - **Privacy:** hostnames, addresses, and deployment config belong here, since holding them is its job. Secrets are committed only encrypted, and real scan output and user data never are.
 - **Docs:** it has no spec or roadmap. The public repo's spec says what it holds, and its roadmap orders the work. Its README says what it deploys, links the public repo's section naming what it owns, then covers first deploy, upgrades, and secrets. A decision about the deployment itself (hosts, hypervisor, layout) gets an ADR in its `docs/stack.md`. A decision about the product belongs in the public repo.
