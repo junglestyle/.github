@@ -68,8 +68,15 @@ Few, focused tests of consequential behavior, at boundaries that stay put.
 - Docs describe the behavior a user can observe (a default, a state name, an env var), so a reader never has to open the code to learn what the project does. They don't carry a second copy of the logic.
 - `docs/SPEC.md` says what the product is meant to do. `docs/ROADMAP.md` says the order it gets built in: slices, each usable on its own, each naming what a user would notice and a done-when someone can demonstrate. A slice names the spec requirements it delivers instead of restating them.
 - A deferred requirement stays in the spec and gets a later slice in the roadmap, not a stub in code.
-- A deployment repo, the private half of a public one, has neither: the public repo's spec says what it holds and its roadmap orders the work. Its README says what it holds and how to run it.
 - A decision that's hard to undo gets an ADR in `docs/stack.md`.
+
+## Deployment repos
+
+A deployment repo, `<name>-deployment`, is the private half of a public repo. It holds the values the public repo can't (addresses, scope, secrets, release pins) and the automation that applies them. The public repo's architecture names what it owns. These rules replace the general ones they name, and everything else applies as written.
+
+- **Privacy:** hostnames, addresses, and deployment config belong here, since holding them is its job. Secrets are committed only encrypted, and real scan output and user data never are.
+- **Docs:** it has no spec or roadmap. The public repo's spec says what it holds, and its roadmap orders the work. Its README says what it deploys, links the public repo's section naming what it owns, then covers first deploy, upgrades, and secrets. A decision about the deployment itself (hosts, hypervisor, layout) gets an ADR in its `docs/stack.md`. A decision about the product belongs in the public repo.
+- **Running it:** its checks are the deployment tool's own, such as `ansible-playbook --syntax-check` and `--check --diff`. It needs no `make check`, no tests, and no copies of these standards.
 
 ## Prose
 
