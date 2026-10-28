@@ -1,17 +1,19 @@
 # Ansible standards
 
-Decisions for Ansible in deployment repos, beneath the org [standards](https://github.com/junglestyle/.github/blob/main/code-standards/README.md), whose Deployment repos section says what such a repo holds. `.ansible-lint` holds the mechanical rules, such as full module names, `changed_when` on commands, and no `ignore_errors`; this file holds what it doesn't check.
+Decisions for Ansible in deployment repos, beneath the org [standards](https://github.com/junglestyle/.github/blob/main/code-standards/README.md), whose Deployment repos section says what such a repo holds. `.ansible-lint` holds the mechanical rules, such as full module names and role-prefixed variables. This file holds the rest, including where it's stricter than the linter.
 
 ## Layout
 
 - `ansible.cfg` at the root sets the inventory and `roles_path`, and Galaxy installs into `./.collections`, which `.gitignore` lists.
 - `site.yml` is the top-level playbook. Each playbook opens with a comment saying what it does and how to run it.
 - Hosts and groups are in `inventory/hosts.yml`, and their values in `inventory/group_vars/` and `host_vars/`, not in playbooks.
-- Repos share Ansible only as a collection listed in `requirements.yml`. No repo imports another's playbooks or roles by path.
+- Repos share Ansible only as a collection, pinned by commit in `requirements.yml`. No repo imports another's playbooks or roles by path.
 
 ## Tasks
 
 - Use a module when one does the job. A `command` or `shell` task that bypasses one has a comment saying why the module won't do. `shell` is only for a pipe or a redirect.
+- A `command` or `shell` task that only reads has `changed_when: false`. The linter accepts any `changed_when`.
+- No `ignore_errors`. A failure that's expected is spelled out with `failed_when`. The linter allows `ignore_errors` on a task whose result is registered; this rule doesn't.
 - A precondition is an `ansible.builtin.assert` whose `fail_msg` says what's wrong and what fixes it.
 - A service restarts only when something it reads has changed, through a handler or a registered result.
 - A task whose arguments or result hold a secret sets `no_log: true`.
@@ -19,8 +21,8 @@ Decisions for Ansible in deployment repos, beneath the org [standards](https://g
 ## Safety
 
 - Every playbook is safe to rerun, and rerunning is how you upgrade. One that replaces something, such as a VM, says in its header what a rerun after a failure does.
-- `--check --diff` changes nothing on the managed hosts and reports what a real run would. It may write scratch files on the controller, under the org's [Secrets](https://github.com/junglestyle/.github/blob/main/code-standards/README.md#secrets) rules when they hold one.
-- A task that only reads sets `check_mode: false`, so check mode has its result. A task that can't be previewed is skipped with `when: not ansible_check_mode`, and no later task needs its result in check mode.
+- `--check --diff` changes nothing on the managed hosts and reports what a real run would change, except in the tasks it skips. It may write scratch files on the controller, under the org's [Secrets](https://github.com/junglestyle/.github/blob/main/code-standards/README.md#secrets) rules when they hold one.
+- A task that only reads sets `check_mode: false`, so check mode has its result. A task that can't be previewed is skipped with `when: not ansible_check_mode` and has a comment saying what it changes, since the dry run won't show it. No later task needs its result in check mode.
 - Anything a playbook creates on shared ground, such as a VM, a dataset, or an app, carries a mark saying who made it. The playbook refuses to change or remove one without its mark.
 
 ## Checking
