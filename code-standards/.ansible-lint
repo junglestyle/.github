@@ -1,0 +1,12 @@
+# The org's reference ansible-lint config. Bootstrap copies it into a repo once; after that it's the repo's.
+profile: production
+# make check runs offline; the collections in requirements.yml are installed before it runs.
+offline: true
+exclude_paths:
+  - .collections/
+skip_list:
+  # These rules are about publishing to Galaxy (a changelog, a license, tags). Collections here are installed
+  # from git by commit and never published.
+  - galaxy
+  # A looped task named "{{ item }}: config dir" reads better in the output than one with the item at the end.
+  - name[template]
