@@ -4,9 +4,14 @@ profile: production
 offline: true
 exclude_paths:
   - .collections/
+  # Ciphertext isn't formatted by hand. make check checks these files are encrypted.
+  - "**/*.sops.yaml"
 skip_list:
-  # These rules are about publishing to Galaxy (a changelog, a license, tags). Collections here are installed
-  # from git by commit and never published.
-  - galaxy
-  # A looped task named "{{ item }}: config dir" reads better in the output than one with the item at the end.
+  # Collections here are installed from git by commit, never published to Galaxy, so they need no changelog, license,
+  # or Galaxy tags. galaxy[no-runtime] stays on: meta/runtime.yml says which ansible-core a collection needs.
+  - galaxy[no-changelog]
+  - galaxy[no-license]
+  - galaxy[tags]
+  # Upstream wants a template only at the end of a name, so a task is recognizable before its name renders. A looped
+  # task named "{{ svc.name }}: config dir" reads better in the output, and that's worth the trade.
   - name[template]

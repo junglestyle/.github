@@ -15,7 +15,7 @@ Decisions for shell scripts, beneath the org [standards](https://github.com/jung
 ## Safety
 
 - A script that installs, sets up or deploys is safe to re-run, and its header says so.
-- A secret the operator types is read with `read -rs`. A file the script writes a secret to is readable only by its owner.
+- A secret the operator types is read with `read -rs`.
 - Nothing pipes a download into a shell, and a tool a script installs is a pinned version.
 - Input from the operator or the network is checked against a pattern before it goes into a command string, such as a `sed` program or `sh -c`.
 

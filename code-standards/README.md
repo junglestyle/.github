@@ -18,7 +18,8 @@ Each repo keeps this file unchanged as `docs/org-standards.md`. It lists the top
   | What | Pinned to |
   | --- | --- |
   | Libraries | Lower bounds in the manifest, exact versions in the committed lockfile |
-  | Container images | A digest. A third-party image may use a tag that names at least its major version |
+  | Container images | A digest where a deployment runs it. [containers.md](https://github.com/junglestyle/.github/blob/main/code-standards/containers.md) covers tags in compose files |
+  | OS packages | The distribution release, named by an image's tag or a VM's cloud image. Packages within it aren't pinned, and a host a deployment manages installs security updates automatically |
   | Tools and Ansible collections | An exact version or a commit |
   | Other downloads | A version or revision, plus a checksum when the source isn't signed |
   | GitHub Actions | A major tag for `actions/*`. Any other action is pinned to a full commit SHA, with a comment naming its version |
@@ -26,8 +27,8 @@ Each repo keeps this file unchanged as `docs/org-standards.md`. It lists the top
 
 - A release is an annotated `vX.Y.Z` tag on main. A tag in any other form isn't a release.
 - Versions follow semver over the interface the repo's architecture names: a published schema or views, an API, or output another program reads. A breaking change to it bumps the major version. Another scheme needs an ADR.
-- A repo releases once a consumer needs to tell versions apart, usually at its first breaking change. Until then, a manifest's version field is `0.0.0`.
-- After the first release, the release commit sets the manifest's version, and CI fails a `vX.Y.Z` tag that doesn't match it. The tag and the manifest are the only places the version is written.
+- A repo makes its first release with the first breaking change to an interface that something outside the repo uses. Until then, its manifest's version is `0.0.0`.
+- From then on, the release commit sets the manifest's version, and CI fails a `vX.Y.Z` tag that doesn't match it. Nothing else writes the version by hand: a lockfile records it, and code that reports it reads it from the package's metadata.
 - A versioned data format or policy, such as a migration or a prompt policy, carries its own integer version, separate from releases.
 
 ## Structure
@@ -87,10 +88,11 @@ Few, focused tests of consequential behavior, at boundaries that stay put.
 ## Secrets
 
 - An app reads its secrets from the environment or a file outside the repo. Only a deployment repo commits them, and only encrypted with sops and age. Another tool needs an ADR.
-- `.sops.yaml` at the root encrypts files named `<name>.sops.yaml`. `secrets.example.yaml` at the root lists every encrypted key with a placeholder value.
+- `.sops.yaml` at the root encrypts files named `<name>.sops.yaml`, with no unencrypted suffix or regex, so every value is encrypted. `secrets.example.yaml` at the root lists every encrypted key with a placeholder value.
 - The age private key never sits on disk. sops reads it from the password manager through `SOPS_AGE_KEY_CMD`.
-- Edit with `sops edit`, so no decrypted copy is written into the repo. `make check` fails if a `*.sops.yaml` file has no `sops:` block, which means it was committed decrypted.
+- Edit with `sops edit`, so no decrypted copy is written into the repo. `make check` fails if any value in a `*.sops.yaml` file, outside its `sops:` block, is neither `ENC[…]` nor empty.
 - A secret written to a host is readable only by its owner, and never shows up in logs or command output.
+- A secret staged on the controller, such as a rendered file waiting to upload or a capture an upgrade carries across, lives outside the repo and is readable only by its owner. The run removes it when it's done. One kept so a failed run can resume is named in the playbook's header, with what removes it.
 - A leaked secret gets rotated. Deleting it from the repo doesn't help, because git keeps it.
 
 ## Docs
@@ -107,8 +109,8 @@ Few, focused tests of consequential behavior, at boundaries that stay put.
 Deployment facts go in a parallel private repo, `<name>-deployment`, kept in the deployer's personal GitHub account, not the org. It holds the values the public repo can't (addresses, scope, secrets, release pins) and the automation that applies them. The public repo's architecture names what it owns. A repo that deploys shared infrastructure rather than one project is a deployment repo with no public repo, named for what it deploys. These rules replace the general ones they name, and everything else applies as written, including the copies of these standards, `AGENTS.md`, and `make check`.
 
 - **Privacy:** hostnames, addresses, and deployment config belong here, since holding them is its job. Secrets follow [Secrets](#secrets), and real scan output and user data are never committed.
-- **Docs:** it has no spec or roadmap. The public repo's spec says what it holds, and its roadmap orders the work. Its README says what it deploys, links the public repo's section naming what it owns, then covers first deploy, upgrades, and secrets. A decision about the deployment itself (hosts, hypervisor, layout) gets an ADR in its `docs/stack.md`. A decision about the product belongs in the public repo. Its `docs/standards.md` holds rules about the deployment itself; the public repo's holds the rest.
-- **Testing:** it has no tests. Before every apply, a dry run against the real hosts (`--check --diff` in Ansible) shows what will change.
+- **Docs:** it has no spec or roadmap. The public repo's spec says what it holds, and its roadmap orders the work. Its README says what it deploys, links the public repo's section naming what it owns, then covers first deploy, upgrades, and secrets. A decision about the deployment itself (hosts, hypervisor, layout) gets an ADR in its `docs/stack.md`. A decision about the product belongs in the public repo. Its `docs/standards.md` holds rules about the deployment itself; the public repo's holds the rest. A deployment repo with no public repo says in its README what it owns, and keeps its planned work in its own `docs/ROADMAP.md` and all its rules in its own `docs/standards.md`.
+- **Testing:** its playbooks, roles, and templates have no tests. Before every apply, a dry run against the real hosts (`--check --diff` in Ansible) shows what will change. Code it carries that does more than declare, such as a custom module, gets tests at its boundaries like any other code.
 - **Running it:** `make check` runs the deployment tool's offline checks. An Ansible repo lists `ansible` in `.org-standards`, and a repo with scripts lists `shell`.
 
 ## Prose
