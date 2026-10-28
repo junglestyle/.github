@@ -64,7 +64,7 @@ Decisions for Python code, beneath the org [standards](https://github.com/jungle
 
 ## Dependencies
 
-- Declare lower bounds only (`httpx>=0.27`); `uv.lock` holds the exact versions. Pin exactly or cap a version only for a known break, with a comment naming it.
+- Bounds follow the org's [Versions and pins](https://github.com/junglestyle/.github/blob/main/code-standards/README.md#versions-and-pins). Pin exactly or cap a version only for a known break, with a comment naming it.
 - torch comes from the PyTorch CPU index through `[tool.uv.sources]`, unless the code runs on a GPU.
 
 ---
