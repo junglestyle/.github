@@ -12,7 +12,7 @@ Decisions for SQL and the databases that hold it, beneath the org [standards](ht
 ## Schema
 
 - Names are snake_case, and table names are plural nouns.
-- A column that holds a closed set of names has a `CHECK` that lists them. In Python, they're the values of the column's `StrEnum`.
+- A column that holds a closed set of names has a `CHECK` that lists them. The `CHECK` is the set's list: any other copy, such as a Python `StrEnum`, is tested against it. A repo that writes another repo's column relies on that repo's `CHECK`, not a copy of it.
 
 ## Postgres
 
