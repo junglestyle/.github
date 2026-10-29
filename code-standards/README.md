@@ -83,7 +83,7 @@ Few, focused tests of consequential behavior, at boundaries that stay put.
 - Never commit real hostnames, addresses, tokens, personal context, or deployment config. In docs, name roles, not machines: "the NAS" or "a GPU host".
 - Commit the shape of config, never its values. `.env.example` holds it unless the repo's standards name another place.
 - The values go in the project's deployment repo (see [Deployment repos](#deployment-repos)).
-- Examples use values reserved for documentation, so a reviewer can tell at a glance that none is real: addresses in `192.0.2.0/24` or `2001:db8::/32`, names under `example.com`, and placeholders for secrets.
+- Examples and test data use made-up values: addresses in the private ranges (`10.0.0.0/8`, `172.16.0.0/12`, `192.168.0.0/16`, and `fd00::/8` for IPv6) or the documentation ones (`192.0.2.0/24`, `2001:db8::/32`), names under `example.com`, and placeholders for secrets. A public service may appear under its real name and address, but what identifies the owner on it, such as a topic or an account, is a placeholder: `https://ntfy.sh/example-endpoint-0000000000`.
 
 ## Secrets
 
