@@ -5,6 +5,7 @@ Decisions for Python code, beneath the org [standards](https://github.com/jungle
 ## Tooling
 
 - uv manages the interpreter, the venv and the lock. Commit `uv.lock`; CI and images run `uv sync --frozen`. No pip installs, Poetry, or requirements files.
+- `[tool.uv] required-version` in `pyproject.toml` pins uv exactly, such as `"==0.11.32"`. uv refuses to run at another version, and CI's `setup-uv` installs that one when it's given no `version`.
 - Pin one Python in `.python-version`: the newest release every dependency supports. `requires-python` matches it.
 - Dev tools go in `[dependency-groups] dev`. Extras are only for optional runtime features, like `models`.
 - Build with hatchling.

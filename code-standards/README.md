@@ -25,6 +25,7 @@ Each repo keeps this file unchanged as `docs/org-standards.md`. It lists the top
   | GitHub Actions | A major tag for `actions/*`. Any other action is pinned to a full commit SHA, with a comment naming its version |
   | These standards | `main`, so a repo's checks fail when the standards move on |
 
+- A tool run through a launcher, such as `uvx --from shellcheck-py==0.11.0.1 shellcheck`, is pinned by its own exact version. The launcher isn't pinned for it, so a repo that isn't Python doesn't take on a Python toolchain pin just to run its tools.
 - A release is an annotated `vX.Y.Z` tag on main. A tag in any other form isn't a release.
 - Versions follow semver over the interface the repo's architecture names: a published schema or views, an API, or output another program reads. A breaking change to it bumps the major version. Another scheme needs an ADR.
 - A repo makes its first release with the first breaking change to an interface that something outside the repo uses. Until then, its manifest's version is `0.0.0`.
