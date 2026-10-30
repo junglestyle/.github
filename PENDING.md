@@ -8,4 +8,6 @@ repos.
 What isn't copied ships on its own and doesn't go here: `sync.sh`, the workflows, `PRINCIPLES.md`, `ruff.toml`,
 `.golangci.yml`, `.ansible-lint`, the examples and the org profile.
 
-None pending.
+## Go standard: deviating from the current release needs an ADR
+
+`code-standards/go.md` says `go.mod`'s `go` line names the current release. Some repos have to build on a host pinned to an older toolchain, for example one where `GOTOOLCHAIN=local` refuses a newer `go` line. Allow that, but only with an ADR in the repo that names the version, why it's needed, and what would move it forward. The `go` line stays an exact version either way, per the pins table.
